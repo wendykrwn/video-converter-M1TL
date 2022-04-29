@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONVERTISSEUR VIDEO </title>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container my-5 py-5">
+    <div class="row align-items-center g-lg-5 py-5">
+        <div class="col-lg-6 text-center text-lg-start">
+          <h1 class="display-4 fw-bold lh-1 mb-3">Le convetisseur vidéo M1 TL</h1>
+          <p class="col-lg-10 fs-4">Uploader votre fichier, entrer votre addresse email, 
+              appuyer sur convertisser et recevez le lien de votre fichier lorsque la conversion est fini par email</p>
+        </div>
+        <div class="col-md-10 mx-auto col-lg-6">
+            <div class="card d-none" id="success_sending">
+                <div class="card-body">
+                    <h2 class="text-success">Vous aller recevoir votre lien par email pour télécharger la vidéo </h2>
+                </div>
+            </div>
+          <form class="p-4 p-md-5 border rounded-3 bg-light" action="okeyy/html" id="sendVideo" enctype='multipart/form-data'>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">UPLOADER VOTRE FICHIER </label>
+                <input class="form-control" type="file" name="files" id="formFile">
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Votre addrese mail </label>
+                <input type="email" id="mail" class="form-control" name="mail" id="exampleFormControlInput1" placeholder="name@example.com">
+              </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">CONVERTIR MAINTENANT</button>
+            <hr class="my-4">
+          </form>
+        </div>
+      </div>
+</div>
+
+
+<!-- JavaScript Bundle with Popper -->
+<script>
+
+    let inputMail = document.getElementById('mail');
+    let inputFile = document.getElementById('formFile');
+    (function () {
+        "use strict";
+
+
+        let forms = document.querySelector('#sendVideo');
+      
+          forms.addEventListener('submit', function(event) {
+            event.preventDefault();
+            let thisForm = this;
+            let action = thisForm.getAttribute('action');
+      
+            //let formData = new FormData( thisForm );
+
+            //console.log(formData.files)
+            handleVideoUpload(thisForm, action);
+      
+          });
+      
+      
+      })();
+      
+
+
+    const handleVideoUpload =  (thisForm,action)  =>  {
+        //const filess = thisForm.target.files
+        //const formData = new FormData()
+
+        formData = {
+            'mail' : inputMail.value,
+            "movie" : inputFile.files[0]
+        }
+
+        fetch(action, {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          console.log(formData)
+          successSending();
+
+        })
+        .catch(error => {
+          console.error(error)
+          console.log(formData)
+          successSending()
+
+        })
+
+
+        function successSending(){
+            document.getElementById("sendVideo").classList.add('d-none')
+            document.getElementById("success_sending").classList.remove('d-none')
+
+          }
+
+      }
+
+
+</script>
+
+</body>
+</html>
